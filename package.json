@@ -1,0 +1,21 @@
+{
+  "name": "nodebrms",
+  "version": "1.0.0",
+  "description": "NodeJS Business Rules Management System ",
+  "main": "dist\\index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nodejs",
+    "brms"
+  ],
+  "author": "Tarcisio Junior",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3"
+  },
+  "devDependencies": {
+    "typescript": "^2.0.6"
+  }
+}
