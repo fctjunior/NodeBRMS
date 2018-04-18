@@ -1,4 +1,5 @@
 import * as express from 'express'
+import * as bodyParser from 'body-parser'
 import Rule from './Entities/Rule'
 import ParameterizedAction from './Entities/ParameterizedAction'
 import ParameterizedCondition from './Entities/ParameterizedCondition'
@@ -10,6 +11,8 @@ class App {
 
   constructor () {
     this.express = express()
+    this.express.use(bodyParser.json());
+    this.express.use(bodyParser.urlencoded({ extended: true }));
     this.mountRoutes()
   }
 
@@ -36,6 +39,43 @@ class App {
 
       res.json({
         message: `ElapsedTime: ${elapsedMS} ms`
+      })
+    })
+
+    router.post('/brms', (req, res) => {
+      
+      var contextEntities =  req.body;
+
+      console.log(req.body);
+
+      var rule = new Rule();
+      
+      rule.parameterizedConditions.push(
+        new ParameterizedCondition(
+          new ParameterEntityProperty('beneficiario','idade'), 
+          (pLeft,pRight)=>(pLeft>pRight), 
+          new ParameterFixedValue(18), 
+          true)
+      );
+
+      rule.parameterizedActionsThen.push(
+        new ParameterizedAction(
+          new ParameterEntityProperty('autorizacaoItem','precoFinal'), 
+          (pLeft,pRight)=>(pRight), 
+          new ParameterFixedValue(50)
+        )
+      );
+      
+      var startTime = new Date().getTime();
+
+      rule.Execute(contextEntities);
+
+      var endTime = new Date().getTime();
+      var elapsedMS = (endTime - startTime);
+
+      res.json({
+        message: `ElapsedTime: ${elapsedMS} ms`,
+        contextEntities: contextEntities
       })
     })
 
