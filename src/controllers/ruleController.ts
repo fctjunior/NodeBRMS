@@ -1,11 +1,11 @@
 
-import Rule from '../entities/Rule'
-import RuleFactory from '../factories/RuleFactory'
-import ParameterizedAction from '../entities/ParameterizedAction'
-import ParameterizedCondition from '../entities/ParameterizedCondition'
-import ParameterFixedValue from '../entities/ParameterFixedValue'
-import ParameterEntityProperty from '../entities/ParameterEntityProperty'
-import PerformanceWatcher from '../entities/PerformanceWatcher'
+import Rule from '../domain/entities/Rule'
+import RuleFactory from '../domain/factories/RuleFactory'
+import ParameterizedAction from '../domain/entities/ParameterizedAction'
+import ParameterizedCondition from '../domain/entities/ParameterizedCondition'
+import ParameterFixedValue from '../domain/entities/ParameterFixedValue'
+import ParameterEntityProperty from '../domain/entities/ParameterEntityProperty'
+import PerformanceWatcher from '../domain/entities/PerformanceWatcher'
 
 class RuleController {
 
@@ -20,19 +20,6 @@ class RuleController {
         var start = PerformanceWatcher.getStart();
 
         var rules = RuleFactory.Mount(req.body);
-
-        console.log('rules');
-        console.log(rules);
-        
-        
-        rules.forEach(rule => {
-          console.log('rulex');
-          console.log(rule);
-          rule.parameterizedConditions.forEach(c => {
-            console.log('condition');
-            console.log(c);
-          });
-        });
 
         rules.forEach(rule => {
           rule.Execute(contextEntities);

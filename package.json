@@ -13,7 +13,11 @@
   "author": "Tarcisio Junior",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.16.3"
+    "@types/node": "^9.6.5",
+    "cluster": "^0.7.7",
+    "express": "^4.16.3",
+    "os": "^0.1.1",
+    "process": "^0.11.10"
   },
   "devDependencies": {
     "typescript": "^2.0.6"

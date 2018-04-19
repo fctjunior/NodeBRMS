@@ -10,36 +10,6 @@ const ParameterEntityProperty_1 = require("../entities/ParameterEntityProperty")
 //Recursively mount a rule from a JSON
 class RuleFactory {
     Mount(input) {
-        /*
-        input = {
-            "rules" : [
-                {
-                    "conditions" : [
-                        {
-                            "parameterLeft" : { "type" : 0, "entity":'beneficiario', "property" : "idade" },
-                            "type" : 3,
-                            "parameterRight" : { "type" : 1, "value" : 18 },
-                            "expectedResult" : true
-                        }
-                    ],
-                    "actionsThen" : [
-                        {
-                            "parameterLeft" : { "entity" : "autorizacaoItem", "property" : "autorizaCompra" },
-                            "type" : 0,
-                            "parameterRight" : { "type" : 1, "value" : true }
-                        }
-                    ],
-                    "actionsElse" : [
-                        {
-                            "parameterLeft" : { "entity" : "autorizacaoItem", "property" : "autorizaCompra" },
-                            "type" : 0,
-                            "parameterRight" : { "type" : 1, "value" : false }
-                        }
-                    ]
-                }
-            ]
-        };
-        */
         if (input.rules == null || input.rules.length === 0)
             throw new Error('Nenhuma rule foi especificada');
         var rules = [];

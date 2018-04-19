@@ -1,8 +1,7 @@
-import RuleFactory from "../factories/RuleFactory";
-import ParameterType from "../enumerators/ParameterType";
-import ConditionType from "../enumerators/ConditionType";
-import ActionType from "../enumerators/ActionType";
-
+import RuleFactory from "../domain/factories/RuleFactory";
+import ParameterType from "../domain/enumerators/ParameterType";
+import ConditionType from "../domain/enumerators/ConditionType";
+import ActionType from "../domain/enumerators/ActionType";
 
 class TestController {
 

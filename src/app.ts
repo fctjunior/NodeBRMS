@@ -1,7 +1,7 @@
 import * as express from 'express'
 import * as bodyParser from 'body-parser'
 import RuleController from './controllers/RuleController'
-import TestController from './controllers/TestController';
+import TestController from './controllers/TestController'
 
 class App {
   public express

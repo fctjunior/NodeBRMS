@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const RuleFactory_1 = require("../factories/RuleFactory");
-const ParameterType_1 = require("../enumerators/ParameterType");
-const ConditionType_1 = require("../enumerators/ConditionType");
-const ActionType_1 = require("../enumerators/ActionType");
+const RuleFactory_1 = require("../domain/factories/RuleFactory");
+const ParameterType_1 = require("../domain/enumerators/ParameterType");
+const ConditionType_1 = require("../domain/enumerators/ConditionType");
+const ActionType_1 = require("../domain/enumerators/ActionType");
 class TestController {
     ruleFactoryTest(req, res) {
         var rule = RuleFactory_1.default.Mount(req.body);
