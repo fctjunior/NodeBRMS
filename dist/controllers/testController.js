@@ -1,19 +1,46 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const users = [
-    { id: 1, username: 'Manuel', email: 'manuel@examplo.com' },
-    { id: 2, username: 'Mariax', email: 'maria@examplo.com' }
-];
-function list_users(req, res) {
-    res.send(users);
+const RuleFactory_1 = require("../factories/RuleFactory");
+const ParameterType_1 = require("../enumerators/ParameterType");
+const ConditionType_1 = require("../enumerators/ConditionType");
+const ActionType_1 = require("../enumerators/ActionType");
+class TestController {
+    ruleFactoryTest(req, res) {
+        var rule = RuleFactory_1.default.Mount(req.body);
+        res.json(rule);
+    }
+    ruleFactoryTestMock(req, res) {
+        var input = {
+            rules: [
+                {
+                    conditions: [
+                        {
+                            parameterLeft: { type: ParameterType_1.default.EntityProperty,
+                                entity: 'beneficiario', property: 'idade' },
+                            type: ConditionType_1.default.GreaterOrEquals,
+                            parameterRight: { type: ParameterType_1.default.FixedValue, value: 18 },
+                            expectedResult: true
+                        }
+                    ],
+                    actionsThen: [
+                        {
+                            parameterLeft: { entity: 'autorizacaoItem', property: 'autorizaCompra' },
+                            type: ActionType_1.default.SetValue,
+                            parameterRight: { type: ParameterType_1.default.FixedValue, value: true }
+                        }
+                    ],
+                    actionsElse: [
+                        {
+                            parameterLeft: { entity: 'autorizacaoItem', property: 'autorizaCompra' },
+                            type: ActionType_1.default.SetValue,
+                            parameterRight: { type: ParameterType_1.default.FixedValue, value: false }
+                        }
+                    ]
+                }
+            ]
+        };
+        var rule = RuleFactory_1.default.Mount(input);
+        res.json(rule);
+    }
 }
-exports.list_users = list_users;
-function add_user(req, res) {
-    users.push(req.body);
-    res.send(users);
-}
-exports.add_user = add_user;
-function welcome(req, res) {
-    res.send('Welcome to BRMS API');
-}
-exports.welcome = welcome;
+exports.default = new TestController();

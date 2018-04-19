@@ -1,7 +1,7 @@
 import IParameter from './IParameter'
 import ParameterEntityProperty from './ParameterEntityProperty'
 
-class ParameterizedAction {
+export default class ParameterizedAction {
 
     constructor(
         private _parameterLeft:ParameterEntityProperty, 
@@ -16,5 +16,3 @@ class ParameterizedAction {
         this._parameterLeft.SetValue(contextEntities, this._action(valueLeft, valueRight));
     }
 }
-
-export default ParameterizedAction;

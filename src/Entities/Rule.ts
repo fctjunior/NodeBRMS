@@ -1,9 +1,7 @@
 import ParameterizedAction from './ParameterizedAction'
 import ParameterizedCondition from './ParameterizedCondition'
 
-class Rule {
-
-    constructor() { }
+export default class Rule {
 
     public parameterizedConditions : Array<ParameterizedCondition> = [];
 
@@ -27,10 +25,7 @@ class Rule {
             this.parameterizedActionsThen:
             this.parameterizedActionsElse;
         
-        for (let i = 0; i < actionsToExecute.length; i++) {
-            actionsToExecute[i].Apply(contextEntities);
-        }
+        for (let i = 0; i < actionsToExecute.length; i++) 
+            actionsToExecute[i].Apply(contextEntities);        
     }
 }
-
-export default Rule;

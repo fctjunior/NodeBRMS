@@ -1,6 +1,6 @@
 import IParameter from './IParameter'
 
-class ParameterizedCondition {
+export default class ParameterizedCondition {
 
     constructor(
         private _parameterLeft:IParameter, 
@@ -16,5 +16,3 @@ class ParameterizedCondition {
         return this._condition(valueLeft, valueRight) == this._expectedResult;
     }
 }
-
-export default ParameterizedCondition;

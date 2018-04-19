@@ -1,8 +1,13 @@
 import IParameter from './IParameter'
 
-class ParameterEntityProperty implements IParameter {
+export default class ParameterEntityProperty implements IParameter {
 
     constructor(private _entityName:string, private _propertyName:string) {
+        if (_entityName == null)
+            throw new Error('invalid _entityName');
+            
+        if (_propertyName == null)
+            throw new Error('invalid _propertyName');
     }
 
     public GetValue(contextEntities:Object) {
@@ -13,5 +18,3 @@ class ParameterEntityProperty implements IParameter {
         return contextEntities[this._entityName][this._propertyName] = value;
     }
 }
-
-export default ParameterEntityProperty;

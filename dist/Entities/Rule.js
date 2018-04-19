@@ -17,9 +17,8 @@ class Rule {
         var actionsToExecute = this.EvaluateAllConditions(contextEntities) ?
             this.parameterizedActionsThen :
             this.parameterizedActionsElse;
-        for (let i = 0; i < actionsToExecute.length; i++) {
+        for (let i = 0; i < actionsToExecute.length; i++)
             actionsToExecute[i].Apply(contextEntities);
-        }
     }
 }
 exports.default = Rule;
