@@ -5,7 +5,7 @@ import ParameterizedAction from '../domain/entities/ParameterizedAction'
 import ParameterizedCondition from '../domain/entities/ParameterizedCondition'
 import ParameterFixedValue from '../domain/entities/ParameterFixedValue'
 import ParameterEntityProperty from '../domain/entities/ParameterEntityProperty'
-import PerformanceWatcher from '../domain/entities/PerformanceWatcher'
+import PerformanceWatcher from '../infrastructure-cross-utils/PerformanceWatcher'
 
 class RuleController {
 
@@ -19,7 +19,7 @@ class RuleController {
         //TODO: it might be inside a rule, so every rule monitor it's timing
         var start = PerformanceWatcher.getStart();
 
-        var rules = RuleFactory.Mount(req.body);
+        var rules = RuleFactory.MountFromJson(req.body);
 
         rules.forEach(rule => {
           rule.Execute(contextEntities);

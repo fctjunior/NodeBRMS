@@ -3,6 +3,8 @@ import ParameterizedCondition from './ParameterizedCondition'
 
 export default class Rule {
 
+    public parameterizedActionsInit : Array<ParameterizedAction> = [];
+
     public parameterizedConditions : Array<ParameterizedCondition> = [];
 
     public parameterizedActionsThen : Array<ParameterizedAction> = [];
@@ -20,6 +22,9 @@ export default class Rule {
     }
     
     public Execute(contextEntities:Object) {
+        for (let i = 0; i < this.parameterizedActionsInit.length; i++) 
+            this.parameterizedActionsInit[i].Apply(contextEntities);   
+
         var actionsToExecute =
             this.EvaluateAllConditions(contextEntities)?
             this.parameterizedActionsThen:

@@ -6,7 +6,7 @@ import ActionType from "../domain/enumerators/ActionType";
 class TestController {
 
     public ruleFactoryTest(req, res) {
-        var rule = RuleFactory.Mount(req.body);
+        var rule = RuleFactory.MountFromJson(req.body);
         res.json(rule);
     }       
 
@@ -42,7 +42,7 @@ class TestController {
                 ]
             }
 
-        var rule = RuleFactory.Mount(input);
+        var rule = RuleFactory.MountFromJson(input);
         res.json(rule);
     }
 }

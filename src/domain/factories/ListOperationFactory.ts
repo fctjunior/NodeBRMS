@@ -1,6 +1,7 @@
 import ConditionType from "../enumerators/ConditionType";
 import ListOperationType from "../enumerators/ListOperationType";
 import ParameterizedCondition from "../entities/ParameterizedCondition";
+import ComplexPropertyReader from "../../infrastructure-cross-utils/ComplexPropertyReader";
 
 class ListOperationFactory {
     public Mount(type:ListOperationType): Function {
@@ -23,7 +24,7 @@ function ListOperationCount(
     aggregateBy:string,
     conditions:Array<ParameterizedCondition>) 
 {
-    var list = contextEntities[entity][property] as Array<any>;
+    var list = ComplexPropertyReader.getValue(contextEntities[entity], property) as Array<any>;
     var count = 0;
 
     if (conditions != null && conditions.length > 0) 
@@ -43,7 +44,6 @@ function ListOperationCount(
             if (itemAccepted)
                 count++;
         }
-
     } 
     else 
     {
@@ -62,7 +62,7 @@ function ListOperationSum(
     aggregateBy:string,
     conditions:Array<ParameterizedCondition>) 
 {
-    var list = contextEntities[entity][property] as Array<any>;
+    var list = ComplexPropertyReader.getValue(contextEntities[entity], property) as Array<any>;
     var sum = 0;
 
     for (let i = 0; i < list.length; i++) 
@@ -78,7 +78,7 @@ function ListOperationSum(
         }
 
         if (itemAccepted)
-            sum = sum + contextEntities["$currentListItem"][aggregateBy];
+            sum = sum + ComplexPropertyReader.getValue(contextEntities["$currentListItem"],aggregateBy);
     }
 
     delete contextEntities.$currentListItem;

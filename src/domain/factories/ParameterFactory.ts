@@ -8,7 +8,7 @@ import ParameterizedCondition from "../entities/ParameterizedCondition";
 import ConditionFactory from "./ConditionFactory";
 
 class ParameterFactory {
-    public Mount(parameter:any): IParameter {
+    public MountFromJson(parameter:any): IParameter {
         var type : ParameterType;
         type = parameter.type;
 
@@ -23,9 +23,9 @@ class ParameterFactory {
 
                 if (parameter.conditions != null && parameter.conditions.length > 0) 
                 parameter.conditions.forEach(c => {
-                    var paramLeft = new ParameterFactory().Mount(c.parameterLeft);
+                    var paramLeft = new ParameterFactory().MountFromJson(c.parameterLeft);
                     var condition = ConditionFactory.Mount(c.type);
-                    var paramRight = new ParameterFactory().Mount(c.parameterRight);
+                    var paramRight = new ParameterFactory().MountFromJson(c.parameterRight);
 
                     conditions.push(
                         new ParameterizedCondition(paramLeft, condition, paramRight, c.expectedResult));

@@ -6,7 +6,7 @@ const ConditionType_1 = require("../domain/enumerators/ConditionType");
 const ActionType_1 = require("../domain/enumerators/ActionType");
 class TestController {
     ruleFactoryTest(req, res) {
-        var rule = RuleFactory_1.default.Mount(req.body);
+        var rule = RuleFactory_1.default.MountFromJson(req.body);
         res.json(rule);
     }
     ruleFactoryTestMock(req, res) {
@@ -39,7 +39,7 @@ class TestController {
                 }
             ]
         };
-        var rule = RuleFactory_1.default.Mount(input);
+        var rule = RuleFactory_1.default.MountFromJson(input);
         res.json(rule);
     }
 }

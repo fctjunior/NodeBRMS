@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const RuleFactory_1 = require("../domain/factories/RuleFactory");
-const PerformanceWatcher_1 = require("../domain/entities/PerformanceWatcher");
+const PerformanceWatcher_1 = require("../infrastructure-cross-utils/PerformanceWatcher");
 class RuleController {
     welcome(req, res) {
         res.send('Welcome to BRMS API');
@@ -10,7 +10,7 @@ class RuleController {
         var contextEntities = req.body.contextEntities;
         //TODO: it might be inside a rule, so every rule monitor it's timing
         var start = PerformanceWatcher_1.default.getStart();
-        var rules = RuleFactory_1.default.Mount(req.body);
+        var rules = RuleFactory_1.default.MountFromJson(req.body);
         rules.forEach(rule => {
             rule.Execute(contextEntities);
         });

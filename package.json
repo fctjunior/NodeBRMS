@@ -4,7 +4,8 @@
   "description": "NodeJS Business Rules Management System ",
   "main": "dist\\index.js",
   "scripts": {
-    "test": "node dist\\tests\\index.test.js"
+    "test": "node dist\\tests\\index.test.js",
+    "start": "tsc \" node dist\\index.js \""
   },
   "keywords": [
     "nodejs",

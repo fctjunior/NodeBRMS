@@ -1,4 +1,5 @@
 import IParameter from './IParameter'
+import ComplexPropertyReader from '../../infrastructure-cross-utils/ComplexPropertyReader';
 
 export default class ParameterEntityProperty implements IParameter {
 
@@ -11,10 +12,10 @@ export default class ParameterEntityProperty implements IParameter {
     }
 
     public GetValue(contextEntities:Object) {
-        return contextEntities[this._entityName][this._propertyName];
+        return ComplexPropertyReader.getValue(contextEntities[this._entityName], this._propertyName);
     }
     
     public SetValue(contextEntities:Object, value:any) {
-        return contextEntities[this._entityName][this._propertyName] = value;
+        return ComplexPropertyReader.setValue(contextEntities[this._entityName], this._propertyName, value);
     }
 }

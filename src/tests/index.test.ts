@@ -4,7 +4,7 @@ import ParameterizedCondition from '../domain/entities/ParameterizedCondition';
 import ParameterEntityProperty from '../domain/entities/ParameterEntityProperty';
 import ParameterFixedValue from '../domain/entities/ParameterFixedValue';
 import ParameterizedAction from '../domain/entities/ParameterizedAction';
-import PerformanceWatcher from '../domain/entities/PerformanceWatcher';
+import PerformanceWatcher from '../infrastructure-cross-utils/PerformanceWatcher';
 import ConditionFactory from '../domain/factories/ConditionFactory';
 import ConditionType from '../domain/enumerators/ConditionType';
 import ActionFactory from '../domain/factories/ActionFactory';
@@ -12,6 +12,7 @@ import ActionType from '../domain/enumerators/ActionType';
 import ParameterEntityPropertyList from '../domain/entities/ParameterEntityPropertyList';
 import ListOperationFactory from '../domain/factories/ListOperationFactory';
 import ListOperationType from '../domain/enumerators/ListOperationType';
+import ComplexPropertyReader from '../infrastructure-cross-utils/ComplexPropertyReader';
 
 var mockBasicContextEntities = function() {
     var contextEntities =  {
@@ -118,15 +119,10 @@ test('Teste operacoes em lista - SUM',(t) => {
             ConditionFactory.Mount(ConditionType.Equals), new ParameterFixedValue(10), true)
     ];
 
-    var ruleAux1 = new Rule();
-    ruleAux1.parameterizedActionsThen.push(new ParameterizedAction(
+    var actionSomarHistorico = new ParameterizedAction(
             new ParameterEntityProperty('VariaveisAuxiliares','AuxNumber1'), 
             ActionFactory.Mount(ActionType.SetValue), 
-            listOperation1
-    ));
-    
-    ruleAux1.Execute(contextEntities);
-    t.assert(contextEntities["VariaveisAuxiliares"]["AuxNumber1"] == 4, "Aplicou regra de soma corretamente (4)");
+            listOperation1);
     
     var listOperation2 = new ParameterEntityPropertyList("Autorizacao","Items",
         ListOperationFactory.Mount(ListOperationType.Sum),"QuantidadeDigitada");
@@ -135,20 +131,16 @@ test('Teste operacoes em lista - SUM',(t) => {
             ConditionFactory.Mount(ConditionType.Equals), new ParameterFixedValue(10), true)
     ];
 
-    var ruleAux2 = new Rule();
-    
-    
-    ruleAux2.parameterizedActionsThen.push(new ParameterizedAction(
+    var actionSomarItensAutorizacao = new ParameterizedAction(
             new ParameterEntityProperty('VariaveisAuxiliares','AuxNumber1'), 
             ActionFactory.Mount(ActionType.Sum), 
             listOperation2
-    ));
-    
-    ruleAux2.Execute(contextEntities);
-    console.log("Segunda quantidade somada: " + contextEntities["VariaveisAuxiliares"]["AuxNumber1"]);
+    );
 
     var rule = new Rule();
 
+    rule.parameterizedActionsInit.push(actionSomarHistorico);
+    rule.parameterizedActionsInit.push(actionSomarItensAutorizacao);
     rule.parameterizedConditions.push(
         new ParameterizedCondition(
         new ParameterEntityProperty('VariaveisAuxiliares','AuxNumber1'),
@@ -164,8 +156,6 @@ test('Teste operacoes em lista - SUM',(t) => {
         )
     );    
 
-    ruleAux1.Execute(contextEntities);
-    ruleAux2.Execute(contextEntities);
     rule.Execute(contextEntities);       
     t.assert(contextEntities.autorizacaoItem.autorizaCompra === true, "Aplicou regra de lista 1 (true) corretamente");
 
@@ -173,8 +163,6 @@ test('Teste operacoes em lista - SUM',(t) => {
         { ProdutoId : 1, LinhaId : 10, QuantidadeDigitada : 4, ValorFinal : 85 }
     ]
     
-    ruleAux1.Execute(contextEntities);
-    ruleAux2.Execute(contextEntities);
     rule.Execute(contextEntities);       
     t.assert(contextEntities.autorizacaoItem.autorizaCompra === false, "Aplicou regra de lista 2 (false) corretamente");
 
@@ -182,17 +170,100 @@ test('Teste operacoes em lista - SUM',(t) => {
     var start = PerformanceWatcher.getStart();
 
     var qtdIteracoes = 1000000;
-    for(var i = 0; i < qtdIteracoes; i++)  {        
-        ruleAux1.Execute(contextEntities);
-        ruleAux2.Execute(contextEntities);
-        rule.Execute(contextEntities);       
-    }
+    for(var i = 0; i < qtdIteracoes; i++)
+        rule.Execute(contextEntities);      
     
     contextEntities['TotalElapsedTimeNS'] = PerformanceWatcher.getElapsed(start);
   
     t.assert(true, 
         "Execucao de " + qtdIteracoes + " de iteracoes em regra de lista: " + 
         contextEntities['TotalElapsedTimeNS'] + "s");
+
+    t.end();
+});
+
+
+test('Teste ComplexPropertyReader',(t) => {
+
+    var myComplexObject =  {
+        id  : 1,
+        name : 'teste',
+        account : {
+            id : 7,
+            pwd : 'xpto',
+            secret : {
+                a : 1,
+                b : 2,
+                adasd : 3
+            },
+            log : [
+                { id: 1, time: 10 },
+                { id: 2, time: 15 },
+                { id: 3, time: 20 },
+            ]
+        }
+    }
+
+
+    var result1 = ComplexPropertyReader.getValue(myComplexObject, 'name');
+    t.assert(result1 == 'teste', "Aplicou ComplexPropertyReader teste 1 - name");
+
+    var result2 = ComplexPropertyReader.getValue(myComplexObject, 'account.pwd');
+    t.assert(result2 == 'xpto', "Aplicou ComplexPropertyReader teste 2 - account.pwd");
+
+    var result3 = ComplexPropertyReader.getValue(myComplexObject, 'account.secret.a');
+    t.assert(result3 == 1, "Aplicou ComplexPropertyReader teste 3 - account.secret.a");
+
+
+    var contextEntities = new Object();
+    contextEntities["myComplexObject"] = myComplexObject;
+    contextEntities["VariaveisAuxiliares"] = { AuxNumber1 : 0 }
+    
+    var listOperation1 = new ParameterEntityPropertyList("myComplexObject","account.log",
+        ListOperationFactory.Mount(ListOperationType.Sum),"time");
+
+    var actionSomarHistorico = new ParameterizedAction(
+            new ParameterEntityProperty('VariaveisAuxiliares','AuxNumber1'), 
+            ActionFactory.Mount(ActionType.SetValue), 
+            listOperation1);
+    
+    var rule = new Rule();
+    rule.parameterizedActionsInit.push(actionSomarHistorico);
+    rule.Execute(contextEntities);
+
+
+    //perf test 1
+    var start = PerformanceWatcher.getStart();
+
+    var qtdIteracoes = 1000000;
+    for(var i = 0; i < qtdIteracoes; i++)  
+        var result1 = ComplexPropertyReader.getValue(myComplexObject, 'name');
+    
+    var elaspedTime = PerformanceWatcher.getElapsed(start);
+  
+    t.assert(true, "Execucao de " + qtdIteracoes + " de iteracoes em ComplexPropertyReader 1: " + elaspedTime + "s");
+
+    //perf test 2 --6x slower
+    var start = PerformanceWatcher.getStart();
+
+    var qtdIteracoes = 1000000;
+    for(var i = 0; i < qtdIteracoes; i++)  
+        var result1 = ComplexPropertyReader.getValue(myComplexObject, 'account.pwd');
+    
+    var elaspedTime = PerformanceWatcher.getElapsed(start);
+  
+    t.assert(true, "Execucao de " + qtdIteracoes + " de iteracoes em ComplexPropertyReader 1: " + elaspedTime + "s");
+
+    //perf test 3 -- 6.6x slower, independent of the string length
+    var start = PerformanceWatcher.getStart();
+
+    var qtdIteracoes = 1000000;
+    for(var i = 0; i < qtdIteracoes; i++)  
+        var result1 = ComplexPropertyReader.getValue(myComplexObject, 'account.secret.adasd');
+    
+    var elaspedTime = PerformanceWatcher.getElapsed(start);
+  
+    t.assert(true, "Execucao de " + qtdIteracoes + " de iteracoes em ComplexPropertyReader 1: " + elaspedTime + "s");
 
     t.end();
 });
