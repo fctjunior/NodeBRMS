@@ -14,10 +14,11 @@ class App {
     mountRoutes() {
         const router = express.Router();
         router.post('/brms', RuleController_1.default.executeRule)
-            .get('/brms', RuleController_1.default.executePerformanceTest);
+            .get('/brms', RuleController_1.default.welcome);
         router.post('/testRuleFactory', TestController_1.default.ruleFactoryTest)
             .get('/testRuleFactory', TestController_1.default.ruleFactoryTestMock);
         this.express.use('/', router);
     }
 }
 exports.default = new App().express;
+//# sourceMappingURL=app.js.map

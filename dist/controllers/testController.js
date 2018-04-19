@@ -44,3 +44,4 @@ class TestController {
     }
 }
 exports.default = new TestController();
+//# sourceMappingURL=TestController.js.map

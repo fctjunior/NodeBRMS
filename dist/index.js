@@ -7,3 +7,4 @@ app_1.default.listen(port, (err) => {
         return console.log(err);
     return console.log(`server is listening on ${port}`);
 });
+//# sourceMappingURL=index.js.map

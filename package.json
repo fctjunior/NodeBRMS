@@ -4,7 +4,7 @@
   "description": "NodeJS Business Rules Management System ",
   "main": "dist\\index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node dist\\tests\\index.test.js"
   },
   "keywords": [
     "nodejs",
@@ -17,7 +17,8 @@
     "cluster": "^0.7.7",
     "express": "^4.16.3",
     "os": "^0.1.1",
-    "process": "^0.11.10"
+    "process": "^0.11.10",
+    "tape": "^4.9.0"
   },
   "devDependencies": {
     "typescript": "^2.0.6"

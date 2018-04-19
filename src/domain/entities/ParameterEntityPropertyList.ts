@@ -24,10 +24,6 @@ export default class ParameterEntityPropertyList implements IParameter {
     }
 
     public GetValue(contextEntities:Object) {
-        return contextEntities[this._entityName][this._propertyName];
-    }
-    
-    public SetValue(contextEntities:Object, value:any) {
-        return contextEntities[this._entityName][this._propertyName] = value;
+        return this._operation(contextEntities, this._entityName, this._propertyName, this._aggregateBy, this.conditions);
     }
 }

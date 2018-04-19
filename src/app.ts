@@ -17,7 +17,7 @@ class App {
     const router = express.Router()
     
     router.post('/brms', RuleController.executeRule)
-          .get('/brms', RuleController.executePerformanceTest);
+          .get('/brms', RuleController.welcome);
     
     router.post('/testRuleFactory', TestController.ruleFactoryTest)
           .get('/testRuleFactory', TestController.ruleFactoryTestMock);
