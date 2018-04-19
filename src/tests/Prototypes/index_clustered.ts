@@ -1,4 +1,5 @@
-import app from './app'
+/*
+import app from '../app'
 import * as cluster from 'cluster'
 import * as os from 'os'
 
@@ -24,3 +25,4 @@ if (cluster.isMaster) {
     return console.log(`server is listening on ${port}`)
   })  
 }
+*/
