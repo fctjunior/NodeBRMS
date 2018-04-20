@@ -1,8 +1,8 @@
 import IParameter from '../Parameters/IParameter'
 import ParameterEntityProperty from '../Parameters/ParameterEntityProperty'
-import IParameterizedAction from './IParameterizedAction';
+import IAction from './IAction';
 
-export default class ParameterizedActionOperation implements IParameterizedAction {
+export default class ActionParameterized implements IAction {
 
     constructor(
         private _parameterLeft:ParameterEntityProperty, 

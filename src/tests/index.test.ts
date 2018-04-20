@@ -1,21 +1,21 @@
 import * as test from 'tape';
-import Rule from '../domain/entities/Rules/Rule';
-import ParameterizedCondition from '../domain/entities/ParameterizedCondition/ParameterizedCondition';
+import RuleParameterized from '../domain/entities/Rules/RuleParameterized';
+import ConditionParameterized from '../domain/entities/Conditions/ConditionParameterized';
 import ParameterEntityProperty from '../domain/entities/Parameters/ParameterEntityProperty';
 import ParameterFixedValue from '../domain/entities/Parameters/ParameterFixedValue';
-import ParameterizedActionOperation from '../domain/entities/ParameterizedAction/ParameterizedActionOperation';
+import ActionParameterized from '../domain/entities/Actions/ActionParameterized';
 import PerformanceWatcher from '../infrastructure-cross-utils/PerformanceWatcher';
 import ConditionFactory from '../domain/factories/ConditionFactory';
-import ConditionType from '../domain/enumerators/ConditionType';
+import ConditionOperator from '../domain/enumerators/operators/ConditionOperator';
 import OperationFactory from '../domain/factories/OperationFactory';
-import OperationType from '../domain/enumerators/OperationType';
+import ActionOperator from '../domain/enumerators/operators/ActionOperator';
 import ParameterEntityPropertyList from '../domain/entities/Parameters/ParameterEntityPropertyList';
 import ListOperationFactory from '../domain/factories/ListOperationFactory';
-import ListOperationType from '../domain/enumerators/ListOperationType';
+import ListOperator from '../domain/enumerators/operators/ListOperator';
 import ComplexPropertyReader from '../infrastructure-cross-utils/ComplexPropertyReader';
-import ParameterizedActionRule from '../domain/entities/ParameterizedAction/ParameterizedActionRule';
-import ParameterizedActionCode from '../domain/entities/ParameterizedAction/ParameterizedActionCode';
-import ParameterizedConditionCode from '../domain/entities/ParameterizedCondition/ParameterizedConditionCode';
+import ActionChainedRule from '../domain/entities/Actions/ActionChainedRule';
+import ActionCode from '../domain/entities/Actions/ActionCode';
+import ConditionCode from '../domain/entities/Conditions/ConditionCode';
 import RuleCode from '../domain/entities/Rules/RuleCode';
 
 
@@ -53,19 +53,19 @@ var mockBasicContextEntities = function() {
     return contextEntities;
 }
 
-var mockBasicRule = function(): Rule {
-    var rule = new Rule();
+var mockBasicRule = function(): RuleParameterized {
+    var rule = new RuleParameterized();
     rule.parameterizedConditions.push(
-        new ParameterizedCondition(
+        new ConditionParameterized(
         new ParameterEntityProperty('beneficiario','idade'),
-        ConditionFactory.Mount(ConditionType.GreaterOrEquals), 
+        ConditionFactory.Mount(ConditionOperator.GreaterOrEquals), 
         new ParameterFixedValue(18), 
         true)
     );
     rule.parameterizedActionsElse.push(
-        new ParameterizedActionOperation(
+        new ActionParameterized(
         new ParameterEntityProperty('autorizacaoItem','autorizaCompra'), 
-        OperationFactory.Mount(OperationType.SetValue), 
+        OperationFactory.Mount(ActionOperator.SetValue), 
         new ParameterFixedValue(false)
         )
     );
@@ -81,13 +81,13 @@ test('Teste mock',(t) => {
     
     var contextEntities = mockBasicContextEntities();
 
-    var rule = new Rule();
+    var rule = new RuleParameterized();
     rule.parameterizedConditions.push(
-        new ParameterizedConditionCode('c.beneficiario.idade > 18')
+        new ConditionCode('c.beneficiario.idade > 18')
     );
 
     rule.parameterizedActionsThen.push(
-        new ParameterizedActionCode("c.beneficiario.nome='chuck norris'"));
+        new ActionCode("c.beneficiario.nome='chuck norris'"));
     rule.Execute(contextEntities);
 
     console.log(contextEntities);
@@ -143,47 +143,47 @@ test('Teste operacoes em lista - SUM',(t) => {
     contextEntities["VariaveisAuxiliares"] = { AuxNumber1 : 0 };
     
     var listOperation1 = new ParameterEntityPropertyList("HistoricoCompras","Items",
-        ListOperationFactory.Mount(ListOperationType.Sum),"QuantidadeVendida");
+        ListOperationFactory.Mount(ListOperator.Sum),"QuantidadeVendida");
     listOperation1.conditions = [
-        new ParameterizedCondition( new ParameterEntityProperty("$currentListItem","Data"), 
-            ConditionFactory.Mount(ConditionType.GreaterOrEquals), new ParameterFixedValue(new Date(2018,4,1)), true),
-        new ParameterizedCondition( new ParameterEntityProperty("$currentListItem","LinhaId"), 
-            ConditionFactory.Mount(ConditionType.Equals), new ParameterFixedValue(10), true)
+        new ConditionParameterized( new ParameterEntityProperty("$currentListItem","Data"), 
+            ConditionFactory.Mount(ConditionOperator.GreaterOrEquals), new ParameterFixedValue(new Date(2018,4,1)), true),
+        new ConditionParameterized( new ParameterEntityProperty("$currentListItem","LinhaId"), 
+            ConditionFactory.Mount(ConditionOperator.Equals), new ParameterFixedValue(10), true)
     ];
 
-    var actionSomarHistorico = new ParameterizedActionOperation(
+    var actionSomarHistorico = new ActionParameterized(
             new ParameterEntityProperty('VariaveisAuxiliares','AuxNumber1'), 
-            OperationFactory.Mount(OperationType.SetValue), 
+            OperationFactory.Mount(ActionOperator.SetValue), 
             listOperation1);
     
     var listOperation2 = new ParameterEntityPropertyList("Autorizacao","Items",
-        ListOperationFactory.Mount(ListOperationType.Sum),"QuantidadeDigitada");
+        ListOperationFactory.Mount(ListOperator.Sum),"QuantidadeDigitada");
     listOperation2.conditions = [
-        new ParameterizedCondition( new ParameterEntityProperty("$currentListItem","LinhaId"), 
-            ConditionFactory.Mount(ConditionType.Equals), new ParameterFixedValue(10), true)
+        new ConditionParameterized( new ParameterEntityProperty("$currentListItem","LinhaId"), 
+            ConditionFactory.Mount(ConditionOperator.Equals), new ParameterFixedValue(10), true)
     ];
 
-    var actionSomarItensAutorizacao = new ParameterizedActionOperation(
+    var actionSomarItensAutorizacao = new ActionParameterized(
             new ParameterEntityProperty('VariaveisAuxiliares','AuxNumber1'), 
-            OperationFactory.Mount(OperationType.Sum), 
+            OperationFactory.Mount(ActionOperator.Sum), 
             listOperation2
     );
 
-    var rule = new Rule();
+    var rule = new RuleParameterized();
 
     rule.parameterizedActionsInit.push(actionSomarHistorico);
     rule.parameterizedActionsInit.push(actionSomarItensAutorizacao);
     rule.parameterizedConditions.push(
-        new ParameterizedCondition(
+        new ConditionParameterized(
         new ParameterEntityProperty('VariaveisAuxiliares','AuxNumber1'),
-        ConditionFactory.Mount(ConditionType.GreaterOrEquals), 
+        ConditionFactory.Mount(ConditionOperator.GreaterOrEquals), 
         new ParameterFixedValue(8), 
         true)
     );
     rule.parameterizedActionsThen.push(
-        new ParameterizedActionOperation(
+        new ActionParameterized(
         new ParameterEntityProperty('autorizacaoItem','autorizaCompra'), 
-        OperationFactory.Mount(OperationType.SetValue), 
+        OperationFactory.Mount(ActionOperator.SetValue), 
         new ParameterFixedValue(false)
         )
     );    
@@ -255,14 +255,14 @@ test('Teste ComplexPropertyReader',(t) => {
     teste++;
     
     var listOperation1 = new ParameterEntityPropertyList("myComplexObject","account.log",
-        ListOperationFactory.Mount(ListOperationType.Sum),"time");
+        ListOperationFactory.Mount(ListOperator.Sum),"time");
 
-    var actionSomarHistorico = new ParameterizedActionOperation(
+    var actionSomarHistorico = new ActionParameterized(
             new ParameterEntityProperty('VariaveisAuxiliares','AuxNumber1'), 
-            OperationFactory.Mount(OperationType.SetValue), 
+            OperationFactory.Mount(ActionOperator.SetValue), 
             listOperation1);
     
-    var rule = new Rule();
+    var rule = new RuleParameterized();
     rule.parameterizedActionsInit.push(actionSomarHistorico);
     rule.Execute(contextEntities);
 
@@ -310,21 +310,21 @@ test('Teste regra encadeada',(t) => {
 
     var chainedRule = mockBasicRule();
         
-    var rule = new Rule();
-    rule.parameterizedConditions.push(new ParameterizedCondition(
+    var rule = new RuleParameterized();
+    rule.parameterizedConditions.push(new ConditionParameterized(
         new ParameterEntityProperty('beneficiario','sexo'),
-        ConditionFactory.Mount(ConditionType.Equals),
+        ConditionFactory.Mount(ConditionOperator.Equals),
         new ParameterFixedValue('M')
     ));
-    rule.parameterizedActionsThen.push(new ParameterizedActionRule(chainedRule));
-    rule.parameterizedActionsThen.push(new ParameterizedActionOperation(
+    rule.parameterizedActionsThen.push(new ActionChainedRule(chainedRule));
+    rule.parameterizedActionsThen.push(new ActionParameterized(
         new ParameterEntityProperty('VariaveisAuxiliares','AuxString1'),
-        OperationFactory.Mount(OperationType.SetValue),
+        OperationFactory.Mount(ActionOperator.SetValue),
         new ParameterFixedValue('É masculino, executa regra encadeada')
     ))
-    rule.parameterizedActionsElse.push(new ParameterizedActionOperation(
+    rule.parameterizedActionsElse.push(new ActionParameterized(
         new ParameterEntityProperty('VariaveisAuxiliares','AuxString1'),
-        OperationFactory.Mount(OperationType.SetValue),
+        OperationFactory.Mount(ActionOperator.SetValue),
         new ParameterFixedValue('Não é masculino, não executa regra encadeada')
     ))
     

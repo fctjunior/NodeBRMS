@@ -1,4 +1,4 @@
-enum OperationType {
+enum ActionOperator {
     SetValue = 0,
     Sum = 1,
     Subtract = 2,
@@ -7,4 +7,4 @@ enum OperationType {
     DiscountPercent = 5
 }
 
-export default OperationType;
+export default ActionOperator;

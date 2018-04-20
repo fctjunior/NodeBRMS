@@ -1,22 +1,22 @@
-import ConditionType from "../enumerators/ConditionType";
+import ConditionOperator from "../enumerators/operators/ConditionOperator";
 
 class ConditionFactory {
-    public Mount(type:ConditionType): Function {
+    public Mount(type:ConditionOperator): Function {
 
         switch (type) {
-            case ConditionType.Different:
+            case ConditionOperator.Different:
                 return (paramleft, paramRight) => (paramleft != paramRight);
-            case ConditionType.Equals:
+            case ConditionOperator.Equals:
                 return (paramleft, paramRight) => (paramleft == paramRight);
-            case ConditionType.Greater:
+            case ConditionOperator.Greater:
                 return (paramleft, paramRight) => (paramleft > paramRight);
-            case ConditionType.GreaterOrEquals:
+            case ConditionOperator.GreaterOrEquals:
                 return (paramleft, paramRight) => (paramleft >= paramRight);
-            case ConditionType.ModulusZero:
+            case ConditionOperator.ModulusZero:
                 return (paramleft, paramRight) => (paramleft % paramRight == 0);
-            case ConditionType.Smaller:
+            case ConditionOperator.Smaller:
                 return (paramleft, paramRight) => (paramleft < paramRight);
-            case ConditionType.SmallerOrEquals:
+            case ConditionOperator.SmallerOrEquals:
                 return (paramleft, paramRight) => (paramleft <= paramRight);
             default:
                 throw new Error('ConditionFactory.Mount: ConditionType - Not implemented');

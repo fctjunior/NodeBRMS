@@ -1,6 +1,6 @@
-import IParameterizedCondition from './IParameterizedCondition'
+import ICondition from './ICondition'
 
-export default class ParameterizedConditionCode implements IParameterizedCondition {
+export default class ConditionCode implements ICondition {
 
     constructor(
         private _code:string) {

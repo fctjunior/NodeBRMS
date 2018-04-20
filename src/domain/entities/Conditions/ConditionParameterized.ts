@@ -1,7 +1,7 @@
 import IParameter from '../Parameters/IParameter'
-import IParameterizedCondition from './IParameterizedCondition'
+import ICondition from './ICondition'
 
-export default class ParameterizedCondition implements IParameterizedCondition {
+export default class ConditionParameterized implements ICondition {
 
     constructor(
         private _parameterLeft:IParameter, 

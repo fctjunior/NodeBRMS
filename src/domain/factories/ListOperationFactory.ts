@@ -1,18 +1,17 @@
-import ConditionType from "../enumerators/ConditionType";
-import ListOperationType from "../enumerators/ListOperationType";
-import ParameterizedCondition from "../entities/ParameterizedCondition/ParameterizedCondition";
+import ListOperator from "../enumerators/operators/ListOperator";
+import ICondition from "../entities/Conditions/ICondition";
 import ComplexPropertyReader from "../../infrastructure-cross-utils/ComplexPropertyReader";
 
 class ListOperationFactory {
-    public Mount(type:ListOperationType): Function {
+    public Mount(type:ListOperator): Function {
 
         switch (type) {
-            case ListOperationType.Count:
+            case ListOperator.Count:
                 return ListOperationCount;
-            case ListOperationType.Sum:
+            case ListOperator.Sum:
                 return ListOperationSum;
             default:
-                throw new Error('ListOperationFactory.Mount: ListOperationType - Not implemented');
+                throw new Error('ListOperationFactory.Mount: ListOperator - Not implemented');
         }
     }
 }
@@ -22,7 +21,7 @@ function ListOperationCount(
     entity:string, 
     property:string,     
     aggregateBy:string,
-    conditions:Array<ParameterizedCondition>) 
+    conditions:Array<ICondition>) 
 {
     var list = ComplexPropertyReader.getValue(contextEntities[entity], property) as Array<any>;
     var count = 0;
@@ -60,7 +59,7 @@ function ListOperationSum(
     entity:string, 
     property:string,     
     aggregateBy:string,
-    conditions:Array<ParameterizedCondition>) 
+    conditions:Array<ICondition>) 
 {
     var list = ComplexPropertyReader.getValue(contextEntities[entity], property) as Array<any>;
     var sum = 0;

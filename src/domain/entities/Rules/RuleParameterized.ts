@@ -1,16 +1,16 @@
 import IRule from './IRule';
-import IParameterizedAction from '../ParameterizedAction/IParameterizedAction'
-import IParameterizedCondition from '../ParameterizedCondition/IParameterizedCondition';
+import IAction from '../Actions/IAction'
+import ICondition from '../Conditions/ICondition';
 
-export default class Rule implements IRule {
+export default class RuleParameterized implements IRule {
 
-    public parameterizedActionsInit : Array<IParameterizedAction> = [];
+    public parameterizedActionsInit : Array<IAction> = [];
 
-    public parameterizedConditions : Array<IParameterizedCondition> = [];
+    public parameterizedConditions : Array<ICondition> = [];
 
-    public parameterizedActionsThen : Array<IParameterizedAction> = [];
+    public parameterizedActionsThen : Array<IAction> = [];
 
-    public parameterizedActionsElse : Array<IParameterizedAction> = [];
+    public parameterizedActionsElse : Array<IAction> = [];
 
     public EvaluateAllConditions(contextEntities:Object):boolean {
 

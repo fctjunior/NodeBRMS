@@ -1,9 +1,9 @@
 import IParameter from './IParameter'
-import ParameterizedCondition from './../ParameterizedCondition/ParameterizedCondition';
+import ICondition from './../Conditions/ICondition';
 
 export default class ParameterEntityPropertyList implements IParameter {
 
-    public conditions : Array<ParameterizedCondition> = [];
+    public conditions : Array<ICondition> = [];
 
     constructor(private _entityName:string, 
                 private _propertyName:string, 

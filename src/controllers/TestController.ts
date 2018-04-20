@@ -1,7 +1,7 @@
 import RuleFactory from "../domain/factories/RuleFactory";
 import ParameterType from "../domain/enumerators/ParameterType";
-import ConditionType from "../domain/enumerators/ConditionType";
-import OperationType from "../domain/enumerators/OperationType";
+import ConditionOperator from "../domain/enumerators/operators/ConditionOperator";
+import ActionOperator from "../domain/enumerators/operators/ActionOperator";
 
 class TestController {
 
@@ -19,7 +19,7 @@ class TestController {
                             { 
                                 parameterLeft : { type : ParameterType.EntityProperty, 
                                     entity:'beneficiario', property:'idade' },
-                                type : ConditionType.GreaterOrEquals,
+                                type : ConditionOperator.GreaterOrEquals,
                                 parameterRight : { type : ParameterType.FixedValue, value : 18 },
                                 expectedResult : true
                             }
@@ -27,14 +27,14 @@ class TestController {
                         actionsThen : [
                             {
                                 parameterLeft : { entity:'autorizacaoItem', property:'autorizaCompra' },
-                                type : OperationType.SetValue,
+                                type : ActionOperator.SetValue,
                                 parameterRight : { type : ParameterType.FixedValue, value : true }
                             }
                         ],
                         actionsElse : [
                             {
                                 parameterLeft : { entity:'autorizacaoItem', property:'autorizaCompra' },
-                                type : OperationType.SetValue,
+                                type : ActionOperator.SetValue,
                                 parameterRight : { type : ParameterType.FixedValue, value : false }
                             }
                         ]

@@ -4,7 +4,7 @@ import ParameterFixedValue from "../entities/Parameters/ParameterFixedValue";
 import ParameterEntityProperty from "../entities/Parameters/ParameterEntityProperty";
 import ParameterEntityPropertyList from "../entities/Parameters/ParameterEntityPropertyList";
 import ListOperationFactory from "./ListOperationFactory";
-import ParameterizedCondition from "../entities/ParameterizedCondition/ParameterizedCondition";
+import ConditionParameterized from "../entities/Conditions/ConditionParameterized";
 import ConditionFactory from "./ConditionFactory";
 
 class ParameterFactory {
@@ -19,7 +19,7 @@ class ParameterFactory {
                 return new ParameterEntityProperty(parameter.entity, parameter.property);
             case ParameterType.EntityPropertyList:
                 var listOperation = ListOperationFactory.Mount(parameter.listOperationType);
-                var conditions : Array<ParameterizedCondition>;
+                var conditions : Array<ConditionParameterized>;
 
                 if (parameter.conditions != null && parameter.conditions.length > 0) 
                 parameter.conditions.forEach(c => {
@@ -28,7 +28,7 @@ class ParameterFactory {
                     var paramRight = new ParameterFactory().MountFromJson(c.parameterRight);
 
                     conditions.push(
-                        new ParameterizedCondition(paramLeft, condition, paramRight, c.expectedResult));
+                        new ConditionParameterized(paramLeft, condition, paramRight, c.expectedResult));
                 });
 
                 var parameterMounted = new ParameterEntityPropertyList(

@@ -1,5 +1,4 @@
 
-import Rule from '../domain/entities/Rules/Rule'
 import RuleFactory from '../domain/factories/RuleFactory'
 import PerformanceWatcher from '../infrastructure-cross-utils/PerformanceWatcher'
 
