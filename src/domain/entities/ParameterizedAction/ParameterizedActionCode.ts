@@ -1,5 +1,5 @@
 import IParameterizedAction from './IParameterizedAction';
-import Rule from '../Rule';
+import Rule from '../Rules/Rule';
 
 export default class ParameterizedActionCode implements IParameterizedAction {
 

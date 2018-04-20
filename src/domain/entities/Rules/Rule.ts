@@ -1,8 +1,8 @@
-import IParameterizedAction from './ParameterizedAction/IParameterizedAction'
-import ParameterizedCondition from './ParameterizedCondition/ParameterizedCondition'
-import IParameterizedCondition from './ParameterizedCondition/IParameterizedCondition';
+import IRule from './IRule';
+import IParameterizedAction from '../ParameterizedAction/IParameterizedAction'
+import IParameterizedCondition from '../ParameterizedCondition/IParameterizedCondition';
 
-export default class Rule {
+export default class Rule implements IRule {
 
     public parameterizedActionsInit : Array<IParameterizedAction> = [];
 
@@ -18,7 +18,7 @@ export default class Rule {
             if (!this.parameterizedConditions[i].Evaluate(contextEntities))
                 return false;
         }
-
+        
         return true;
     }
     

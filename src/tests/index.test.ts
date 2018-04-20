@@ -1,5 +1,5 @@
 import * as test from 'tape';
-import Rule from '../domain/entities/Rule';
+import Rule from '../domain/entities/Rules/Rule';
 import ParameterizedCondition from '../domain/entities/ParameterizedCondition/ParameterizedCondition';
 import ParameterEntityProperty from '../domain/entities/Parameters/ParameterEntityProperty';
 import ParameterFixedValue from '../domain/entities/Parameters/ParameterFixedValue';
@@ -16,6 +16,7 @@ import ComplexPropertyReader from '../infrastructure-cross-utils/ComplexProperty
 import ParameterizedActionRule from '../domain/entities/ParameterizedAction/ParameterizedActionRule';
 import ParameterizedActionCode from '../domain/entities/ParameterizedAction/ParameterizedActionCode';
 import ParameterizedConditionCode from '../domain/entities/ParameterizedCondition/ParameterizedConditionCode';
+import RuleCode from '../domain/entities/Rules/RuleCode';
 
 
 var mockBasicContextEntities = function() {
@@ -82,12 +83,17 @@ test('Teste mock',(t) => {
 
     var rule = new Rule();
     rule.parameterizedConditions.push(
-        new ParameterizedConditionCode('c.beneficiario.idade < 18')
+        new ParameterizedConditionCode('c.beneficiario.idade > 18')
     );
 
     rule.parameterizedActionsThen.push(
         new ParameterizedActionCode("c.beneficiario.nome='chuck norris'"));
     rule.Execute(contextEntities);
+
+    console.log(contextEntities);
+
+    var ruleCode = new RuleCode('if (c.beneficiario.nome =="chuck norris") c.beneficiario.idade = 99');
+    ruleCode.Execute(contextEntities);
 
     console.log(contextEntities);
 

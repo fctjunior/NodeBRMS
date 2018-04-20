@@ -4,9 +4,9 @@ import ParameterType from '../enumerators/ParameterType'
 import OperationFactory from './OperationFactory';
 import ConditionFactory from './ConditionFactory';
 import ParameterFactory from './ParameterFactory';
-import Rule from '../entities/Rule'
+import Rule from '../entities/Rules/Rule'
 import ParameterizedActionOperation from '../entities/ParameterizedAction/ParameterizedActionOperation';
-import ParameterizedCondition from '../entities/ParameterizedCondition/ParameterizedCondition';
+import ParameterizedCondition from '../entities/ParameterizedCondition/ParameterizedCondition'
 import ParameterEntityProperty from '../entities/Parameters/ParameterEntityProperty';
 
 class RuleFactory {
