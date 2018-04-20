@@ -13,13 +13,17 @@ import ParameterEntityPropertyList from '../domain/entities/Parameters/Parameter
 import ListOperationFactory from '../domain/factories/ListOperationFactory';
 import ListOperationType from '../domain/enumerators/ListOperationType';
 import ComplexPropertyReader from '../infrastructure-cross-utils/ComplexPropertyReader';
+import ParameterizedActionRule from '../domain/entities/ParameterizedAction/ParameterizedActionRule';
+import ParameterizedActionCode from '../domain/entities/ParameterizedAction/ParameterizedActionCode';
+import ParameterizedConditionCode from '../domain/entities/ParameterizedCondition/ParameterizedConditionCode';
+
 
 var mockBasicContextEntities = function() {
     var contextEntities =  {
 		"beneficiario" : {
 			"nome" : "Tarcisio",
 			"sexo" : "M",
-			"idade" : 22
+			"idade" : 29
 		},
 		"credenciado" : {
 			"nome" : "Drogaria zézinzin",
@@ -67,6 +71,28 @@ var mockBasicRule = function(): Rule {
 
     return rule;
 }
+
+
+test('Teste mock',(t) => {
+    var teste = 1;
+    eval('teste = teste + 1');
+    teste++;
+    
+    var contextEntities = mockBasicContextEntities();
+
+    var rule = new Rule();
+    rule.parameterizedConditions.push(
+        new ParameterizedConditionCode('c.beneficiario.idade < 18')
+    );
+
+    rule.parameterizedActionsThen.push(
+        new ParameterizedActionCode("c.beneficiario.nome='chuck norris'"));
+    rule.Execute(contextEntities);
+
+    console.log(contextEntities);
+
+    t.end();
+});
 
 test('Teste regra basico',(t) => {
 
@@ -267,6 +293,77 @@ test('Teste ComplexPropertyReader',(t) => {
     var elaspedTime = PerformanceWatcher.getElapsed(start);
   
     t.assert(true, "Execucao de " + qtdIteracoes + " de iteracoes em ComplexPropertyReader 1: " + elaspedTime + "s");
+
+    t.end();
+});
+
+test('Teste regra encadeada',(t) => {
+
+    var contextEntities = mockBasicContextEntities();
+    contextEntities["VariaveisAuxiliares"] = { AuxString1 : '' };
+
+    var chainedRule = mockBasicRule();
+        
+    var rule = new Rule();
+    rule.parameterizedConditions.push(new ParameterizedCondition(
+        new ParameterEntityProperty('beneficiario','sexo'),
+        ConditionFactory.Mount(ConditionType.Equals),
+        new ParameterFixedValue('M')
+    ));
+    rule.parameterizedActionsThen.push(new ParameterizedActionRule(chainedRule));
+    rule.parameterizedActionsThen.push(new ParameterizedActionOperation(
+        new ParameterEntityProperty('VariaveisAuxiliares','AuxString1'),
+        OperationFactory.Mount(OperationType.SetValue),
+        new ParameterFixedValue('É masculino, executa regra encadeada')
+    ))
+    rule.parameterizedActionsElse.push(new ParameterizedActionOperation(
+        new ParameterEntityProperty('VariaveisAuxiliares','AuxString1'),
+        OperationFactory.Mount(OperationType.SetValue),
+        new ParameterFixedValue('Não é masculino, não executa regra encadeada')
+    ))
+    
+    rule.Execute(contextEntities);
+    t.assert(contextEntities.autorizacaoItem.autorizaCompra === true, "Aplicou regra basica 1.0 (true) corretamente");
+    t.assert(contextEntities['VariaveisAuxiliares']['AuxString1'] === 'É masculino, executa regra encadeada', 
+             "Aplicou regra basica 1.1 (str) corretamente");
+
+    contextEntities.beneficiario.idade = 15;
+    rule.Execute(contextEntities);
+    t.assert(contextEntities.autorizacaoItem.autorizaCompra === false, "Aplicou regra basica 1.2 (false) corretamente");
+    t.assert(contextEntities['VariaveisAuxiliares']['AuxString1'] === 'É masculino, executa regra encadeada', 
+             "Aplicou regra basica 1.3 (str) corretamente");
+
+    
+    var contextEntities = mockBasicContextEntities();
+    contextEntities["VariaveisAuxiliares"] = { AuxString1 : '' };
+
+    contextEntities.beneficiario.sexo = 'F';
+    contextEntities.beneficiario.idade = 19;
+    
+    
+    rule.Execute(contextEntities);
+    t.assert(contextEntities.autorizacaoItem.autorizaCompra === true, "Aplicou regra basica 2.0 (true) corretamente");
+    t.assert(contextEntities['VariaveisAuxiliares']['AuxString1'] === 'Não é masculino, não executa regra encadeada', 
+             "Aplicou regra basica 2.1 (str) corretamente");
+             
+    contextEntities.beneficiario.idade = 15;
+    rule.Execute(contextEntities);
+    t.assert(contextEntities.autorizacaoItem.autorizaCompra === true, "Aplicou regra basica 2.2 (false) corretamente");
+    t.assert(contextEntities['VariaveisAuxiliares']['AuxString1'] === 'Não é masculino, não executa regra encadeada', 
+             "Aplicou regra basica 2.3 (str) corretamente");
+
+    //perf test 1
+    var start = PerformanceWatcher.getStart();
+
+    var qtdIteracoes = 1000000;
+    for(var i = 0; i < qtdIteracoes; i++)  
+        rule.Execute(contextEntities);
+    
+    contextEntities['TotalElapsedTimeNS'] = PerformanceWatcher.getElapsed(start);
+  
+    t.assert(true, 
+        "Execucao de " + qtdIteracoes + " de iteracoes em regra encadeada: " + 
+        contextEntities['TotalElapsedTimeNS'] + "s");
 
     t.end();
 });

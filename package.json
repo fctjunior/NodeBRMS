@@ -4,7 +4,8 @@
   "description": "NodeJS Business Rules Management System ",
   "main": "dist\\index.js",
   "scripts": {
-    "test": "node dist\\tests\\index.test.js",
+    "tsc": "tsc",
+    "test": "concurrently \"node dist\\tests\\index.test.js\"",
     "start": "tsc \" node dist\\index.js \""
   },
   "keywords": [
@@ -22,6 +23,7 @@
     "tape": "^4.9.0"
   },
   "devDependencies": {
-    "typescript": "^2.0.6"
+    "typescript": "^2.0.6",
+    "concurrently": "^2.0.0"
   }
 }

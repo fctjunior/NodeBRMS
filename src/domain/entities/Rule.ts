@@ -1,11 +1,12 @@
 import IParameterizedAction from './ParameterizedAction/IParameterizedAction'
 import ParameterizedCondition from './ParameterizedCondition/ParameterizedCondition'
+import IParameterizedCondition from './ParameterizedCondition/IParameterizedCondition';
 
 export default class Rule {
 
     public parameterizedActionsInit : Array<IParameterizedAction> = [];
 
-    public parameterizedConditions : Array<ParameterizedCondition> = [];
+    public parameterizedConditions : Array<IParameterizedCondition> = [];
 
     public parameterizedActionsThen : Array<IParameterizedAction> = [];
 

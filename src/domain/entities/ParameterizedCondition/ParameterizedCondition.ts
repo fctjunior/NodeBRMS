@@ -1,5 +1,5 @@
 import IParameter from '../Parameters/IParameter'
-import IParameterizedCondition from './ParameterizedCondition'
+import IParameterizedCondition from './IParameterizedCondition'
 
 export default class ParameterizedCondition implements IParameterizedCondition {
 
