@@ -1,13 +1,13 @@
-import ActionType from '../enumerators/ActionType'
+import OperationType from '../enumerators/OperationType'
 import ConditionType from '../enumerators/ConditionType'
 import ParameterType from '../enumerators/ParameterType'
-import ActionFactory from './ActionFactory';
+import OperationFactory from './OperationFactory';
 import ConditionFactory from './ConditionFactory';
 import ParameterFactory from './ParameterFactory';
 import Rule from '../entities/Rule'
-import ParameterizedAction from '../entities/ParameterizedAction';
-import ParameterizedCondition from '../entities/ParameterizedCondition';
-import ParameterEntityProperty from '../entities/ParameterEntityProperty';
+import ParameterizedActionOperation from '../entities/ParameterizedAction/ParameterizedActionOperation';
+import ParameterizedCondition from '../entities/ParameterizedCondition/ParameterizedCondition';
+import ParameterEntityProperty from '../entities/Parameters/ParameterEntityProperty';
 
 class RuleFactory {
     public MountFromJson(input):Array<Rule> {
@@ -34,22 +34,22 @@ class RuleFactory {
                 currentRule.actionsThen.forEach(a => {
                     var paramLeft = 
                         new ParameterEntityProperty(a.parameterLeft.entity, a.parameterLeft.property);
-                    var action = ActionFactory.Mount(a.type);
+                    var action = OperationFactory.Mount(a.type);
                     var paramRight = ParameterFactory.MountFromJson(a.parameterRight);
 
                     rule.parameterizedActionsThen.push(
-                        new ParameterizedAction(paramLeft, action, paramRight));
+                        new ParameterizedActionOperation(paramLeft, action, paramRight));
                 });
 
             if (currentRule.actionsElse != null && currentRule.actionsElse.length > 0) 
                 currentRule.actionsElse.forEach(a => {
                     var paramLeft = 
                         new ParameterEntityProperty(a.parameterLeft.entity, a.parameterLeft.property);
-                    var action = ActionFactory.Mount(a.type);
+                    var action = OperationFactory.Mount(a.type);
                     var paramRight = ParameterFactory.MountFromJson(a.parameterRight);
 
                     rule.parameterizedActionsElse.push(
-                        new ParameterizedAction(paramLeft, action, paramRight));
+                        new ParameterizedActionOperation(paramLeft, action, paramRight));
                 });
             
             rules.push(rule);

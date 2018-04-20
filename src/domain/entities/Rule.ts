@@ -1,15 +1,15 @@
-import ParameterizedAction from './ParameterizedAction'
-import ParameterizedCondition from './ParameterizedCondition'
+import IParameterizedAction from './ParameterizedAction/IParameterizedAction'
+import ParameterizedCondition from './ParameterizedCondition/ParameterizedCondition'
 
 export default class Rule {
 
-    public parameterizedActionsInit : Array<ParameterizedAction> = [];
+    public parameterizedActionsInit : Array<IParameterizedAction> = [];
 
     public parameterizedConditions : Array<ParameterizedCondition> = [];
 
-    public parameterizedActionsThen : Array<ParameterizedAction> = [];
+    public parameterizedActionsThen : Array<IParameterizedAction> = [];
 
-    public parameterizedActionsElse : Array<ParameterizedAction> = [];
+    public parameterizedActionsElse : Array<IParameterizedAction> = [];
 
     public EvaluateAllConditions(contextEntities:Object):boolean {
 

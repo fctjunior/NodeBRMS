@@ -1,10 +1,6 @@
 
 import Rule from '../domain/entities/Rule'
 import RuleFactory from '../domain/factories/RuleFactory'
-import ParameterizedAction from '../domain/entities/ParameterizedAction'
-import ParameterizedCondition from '../domain/entities/ParameterizedCondition'
-import ParameterFixedValue from '../domain/entities/ParameterFixedValue'
-import ParameterEntityProperty from '../domain/entities/ParameterEntityProperty'
 import PerformanceWatcher from '../infrastructure-cross-utils/PerformanceWatcher'
 
 class RuleController {

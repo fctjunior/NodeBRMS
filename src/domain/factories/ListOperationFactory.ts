@@ -1,6 +1,6 @@
 import ConditionType from "../enumerators/ConditionType";
 import ListOperationType from "../enumerators/ListOperationType";
-import ParameterizedCondition from "../entities/ParameterizedCondition";
+import ParameterizedCondition from "../entities/ParameterizedCondition/ParameterizedCondition";
 import ComplexPropertyReader from "../../infrastructure-cross-utils/ComplexPropertyReader";
 
 class ListOperationFactory {

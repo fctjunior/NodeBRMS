@@ -1,19 +1,19 @@
-import ActionType from "../enumerators/ActionType";
+import OperationType from "../enumerators/OperationType";
 
 class ActionFactory {
-    public Mount(type:ActionType): Function {
+    public Mount(type:OperationType): Function {
         switch (type) {
-            case ActionType.SetValue:
+            case OperationType.SetValue:
                 return (paramleft, paramRight) => (paramRight);
-            case ActionType.Sum:
+            case OperationType.Sum:
                 return (paramleft, paramRight) => (paramleft + paramRight);
-            case ActionType.Subtract:
+            case OperationType.Subtract:
                 return (paramleft, paramRight) => (paramleft - paramRight);
-            case ActionType.Power:
+            case OperationType.Power:
                 return (paramleft, paramRight) => (paramleft * paramRight);
-            case ActionType.Divide:
+            case OperationType.Divide:
                 return (paramleft, paramRight) => (paramleft / paramRight);
-            case ActionType.DiscountPercent:
+            case OperationType.DiscountPercent:
                 return (paramleft, paramRight) => (paramleft - (paramleft * (paramRight / 100)));
             default:
                 throw new Error('ActionFactory.Mount: ActionType - Not implemented');

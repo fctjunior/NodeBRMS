@@ -1,5 +1,5 @@
 import IParameter from './IParameter'
-import ParameterizedCondition from './ParameterizedCondition';
+import ParameterizedCondition from './../ParameterizedCondition/ParameterizedCondition';
 
 export default class ParameterEntityPropertyList implements IParameter {
 

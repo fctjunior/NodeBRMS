@@ -1,15 +1,15 @@
 import * as test from 'tape';
 import Rule from '../domain/entities/Rule';
-import ParameterizedCondition from '../domain/entities/ParameterizedCondition';
-import ParameterEntityProperty from '../domain/entities/ParameterEntityProperty';
-import ParameterFixedValue from '../domain/entities/ParameterFixedValue';
-import ParameterizedAction from '../domain/entities/ParameterizedAction';
+import ParameterizedCondition from '../domain/entities/ParameterizedCondition/ParameterizedCondition';
+import ParameterEntityProperty from '../domain/entities/Parameters/ParameterEntityProperty';
+import ParameterFixedValue from '../domain/entities/Parameters/ParameterFixedValue';
+import ParameterizedActionOperation from '../domain/entities/ParameterizedAction/ParameterizedActionOperation';
 import PerformanceWatcher from '../infrastructure-cross-utils/PerformanceWatcher';
 import ConditionFactory from '../domain/factories/ConditionFactory';
 import ConditionType from '../domain/enumerators/ConditionType';
-import ActionFactory from '../domain/factories/ActionFactory';
-import ActionType from '../domain/enumerators/ActionType';
-import ParameterEntityPropertyList from '../domain/entities/ParameterEntityPropertyList';
+import OperationFactory from '../domain/factories/OperationFactory';
+import OperationType from '../domain/enumerators/OperationType';
+import ParameterEntityPropertyList from '../domain/entities/Parameters/ParameterEntityPropertyList';
 import ListOperationFactory from '../domain/factories/ListOperationFactory';
 import ListOperationType from '../domain/enumerators/ListOperationType';
 import ComplexPropertyReader from '../infrastructure-cross-utils/ComplexPropertyReader';
@@ -58,9 +58,9 @@ var mockBasicRule = function(): Rule {
         true)
     );
     rule.parameterizedActionsElse.push(
-        new ParameterizedAction(
+        new ParameterizedActionOperation(
         new ParameterEntityProperty('autorizacaoItem','autorizaCompra'), 
-        ActionFactory.Mount(ActionType.SetValue), 
+        OperationFactory.Mount(OperationType.SetValue), 
         new ParameterFixedValue(false)
         )
     );
@@ -119,9 +119,9 @@ test('Teste operacoes em lista - SUM',(t) => {
             ConditionFactory.Mount(ConditionType.Equals), new ParameterFixedValue(10), true)
     ];
 
-    var actionSomarHistorico = new ParameterizedAction(
+    var actionSomarHistorico = new ParameterizedActionOperation(
             new ParameterEntityProperty('VariaveisAuxiliares','AuxNumber1'), 
-            ActionFactory.Mount(ActionType.SetValue), 
+            OperationFactory.Mount(OperationType.SetValue), 
             listOperation1);
     
     var listOperation2 = new ParameterEntityPropertyList("Autorizacao","Items",
@@ -131,9 +131,9 @@ test('Teste operacoes em lista - SUM',(t) => {
             ConditionFactory.Mount(ConditionType.Equals), new ParameterFixedValue(10), true)
     ];
 
-    var actionSomarItensAutorizacao = new ParameterizedAction(
+    var actionSomarItensAutorizacao = new ParameterizedActionOperation(
             new ParameterEntityProperty('VariaveisAuxiliares','AuxNumber1'), 
-            ActionFactory.Mount(ActionType.Sum), 
+            OperationFactory.Mount(OperationType.Sum), 
             listOperation2
     );
 
@@ -149,9 +149,9 @@ test('Teste operacoes em lista - SUM',(t) => {
         true)
     );
     rule.parameterizedActionsThen.push(
-        new ParameterizedAction(
+        new ParameterizedActionOperation(
         new ParameterEntityProperty('autorizacaoItem','autorizaCompra'), 
-        ActionFactory.Mount(ActionType.SetValue), 
+        OperationFactory.Mount(OperationType.SetValue), 
         new ParameterFixedValue(false)
         )
     );    
@@ -218,13 +218,16 @@ test('Teste ComplexPropertyReader',(t) => {
     var contextEntities = new Object();
     contextEntities["myComplexObject"] = myComplexObject;
     contextEntities["VariaveisAuxiliares"] = { AuxNumber1 : 0 }
+
+    var teste = 1;
+    teste++;
     
     var listOperation1 = new ParameterEntityPropertyList("myComplexObject","account.log",
         ListOperationFactory.Mount(ListOperationType.Sum),"time");
 
-    var actionSomarHistorico = new ParameterizedAction(
+    var actionSomarHistorico = new ParameterizedActionOperation(
             new ParameterEntityProperty('VariaveisAuxiliares','AuxNumber1'), 
-            ActionFactory.Mount(ActionType.SetValue), 
+            OperationFactory.Mount(OperationType.SetValue), 
             listOperation1);
     
     var rule = new Rule();

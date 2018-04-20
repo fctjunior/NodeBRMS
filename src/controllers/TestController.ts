@@ -1,7 +1,7 @@
 import RuleFactory from "../domain/factories/RuleFactory";
 import ParameterType from "../domain/enumerators/ParameterType";
 import ConditionType from "../domain/enumerators/ConditionType";
-import ActionType from "../domain/enumerators/ActionType";
+import OperationType from "../domain/enumerators/OperationType";
 
 class TestController {
 
@@ -27,14 +27,14 @@ class TestController {
                         actionsThen : [
                             {
                                 parameterLeft : { entity:'autorizacaoItem', property:'autorizaCompra' },
-                                type : ActionType.SetValue,
+                                type : OperationType.SetValue,
                                 parameterRight : { type : ParameterType.FixedValue, value : true }
                             }
                         ],
                         actionsElse : [
                             {
                                 parameterLeft : { entity:'autorizacaoItem', property:'autorizaCompra' },
-                                type : ActionType.SetValue,
+                                type : OperationType.SetValue,
                                 parameterRight : { type : ParameterType.FixedValue, value : false }
                             }
                         ]

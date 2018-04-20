@@ -1,5 +1,5 @@
 import IParameter from './IParameter'
-import ComplexPropertyReader from '../../infrastructure-cross-utils/ComplexPropertyReader';
+import ComplexPropertyReader from '../../../infrastructure-cross-utils/ComplexPropertyReader';
 
 export default class ParameterEntityProperty implements IParameter {
 

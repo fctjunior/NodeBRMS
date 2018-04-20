@@ -1,10 +1,10 @@
-import IParameter from "../entities/IParameter";
+import IParameter from "../entities/Parameters/IParameter";
 import ParameterType from "../enumerators/ParameterType";
-import ParameterFixedValue from "../entities/ParameterFixedValue";
-import ParameterEntityProperty from "../entities/ParameterEntityProperty";
-import ParameterEntityPropertyList from "../entities/ParameterEntityPropertyList";
+import ParameterFixedValue from "../entities/Parameters/ParameterFixedValue";
+import ParameterEntityProperty from "../entities/Parameters/ParameterEntityProperty";
+import ParameterEntityPropertyList from "../entities/Parameters/ParameterEntityPropertyList";
 import ListOperationFactory from "./ListOperationFactory";
-import ParameterizedCondition from "../entities/ParameterizedCondition";
+import ParameterizedCondition from "../entities/ParameterizedCondition/ParameterizedCondition";
 import ConditionFactory from "./ConditionFactory";
 
 class ParameterFactory {
