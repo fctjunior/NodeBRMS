@@ -16,7 +16,7 @@ class ActionFactory {
             case ActionOperator.DiscountPercent:
                 return (paramleft, paramRight) => (paramleft - (paramleft * (paramRight / 100)));
             default:
-                throw new Error('ActionFactory.Mount: ActionType - Not implemented');
+                throw new Error('ActionFactory.Mount: ActionOperator - Not implemented');
         }
     }
 }

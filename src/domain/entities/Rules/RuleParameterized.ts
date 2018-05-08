@@ -11,7 +11,7 @@ export default class RuleParameterized implements IRule {
     public parameterizedActionsThen : Array<IAction> = [];
 
     public parameterizedActionsElse : Array<IAction> = [];
-
+    
     public EvaluateAllConditions(contextEntities:Object):boolean {
 
         for (let i = 0; i < this.parameterizedConditions.length; i++) {

@@ -32,13 +32,17 @@ var mockBasicContextEntities = function() {
 			"ativo" : true
 		},
 		"autorizacaoItem": {
-			"quantidadeDigitada" : 1,
+			"quantidadeDigitada" : 2,
 			"autorizaCompra" : true,
 			"precoFinal" : 100
         },
+        "unidadesDesconto" : [
+            { "descontoVenda" : 0, "descontoReposicao" : 0 },
+            { "descontoVenda" : 0, "descontoReposicao" : 0 }
+        ],
         "Autorizacao": {
             "Items" : [
-                { ProdutoId : 1, LinhaId : 10, QuantidadeDigitada : 2, ValorFinal : 85}
+                { ProdutoId : 1, LinhaId : 10, QuantidadeDigitada : 2, ValorFinal : 85 }
             ]
         },
         "HistoricoCompras": {
@@ -73,32 +77,6 @@ var mockBasicRule = function(): RuleParameterized {
     return rule;
 }
 
-
-test('Teste mock',(t) => {
-    var teste = 1;
-    eval('teste = teste + 1');
-    teste++;
-    
-    var contextEntities = mockBasicContextEntities();
-
-    var rule = new RuleParameterized();
-    rule.parameterizedConditions.push(
-        new ConditionCode('c.beneficiario.idade > 18')
-    );
-
-    rule.parameterizedActionsThen.push(
-        new ActionCode("c.beneficiario.nome='chuck norris'"));
-    rule.Execute(contextEntities);
-
-    console.log(contextEntities);
-
-    var ruleCode = new RuleCode('if (c.beneficiario.nome =="chuck norris") c.beneficiario.idade = 99');
-    ruleCode.Execute(contextEntities);
-
-    console.log(contextEntities);
-
-    t.end();
-});
 
 test('Teste regra basico',(t) => {
 
@@ -371,5 +349,43 @@ test('Teste regra encadeada',(t) => {
         "Execucao de " + qtdIteracoes + " de iteracoes em regra encadeada: " + 
         contextEntities['TotalElapsedTimeNS'] + "s");
 
+    t.end();
+});
+
+
+test('Teste coded rules',(t) => {
+    var contextEntities = mockBasicContextEntities();
+
+    var rule = new RuleParameterized();
+    rule.parameterizedConditions.push(
+        new ConditionCode('c.beneficiario.idade > 18')
+    );
+
+    rule.parameterizedActionsThen.push(
+        new ActionCode("c.beneficiario.nome='chuck norris'"));
+    rule.Execute(contextEntities);
+
+    console.log(contextEntities);
+
+    var ruleCode = new RuleCode('if (c.beneficiario.nome =="chuck norris") c.beneficiario.idade = 99');
+    ruleCode.Execute(contextEntities);
+
+    console.log(contextEntities);
+    
+    //Performance rule
+    var ruleCode = new RuleCode('if (c.beneficiario.idade < 18) c.autorizacaoItem.autorizaCompra = false');
+    
+    var start = PerformanceWatcher.getStart();
+
+    var qtdIteracoes = 1000000;
+    for(var i = 0; i < qtdIteracoes; i++)  
+        ruleCode.Execute(contextEntities);
+    
+    contextEntities['TotalElapsedTimeNS'] = PerformanceWatcher.getElapsed(start);
+    
+    t.assert(true, 
+        "Execucao de " + qtdIteracoes + " de iteracoes em regra codificada: " + 
+        contextEntities['TotalElapsedTimeNS'] + "s");
+    
     t.end();
 });

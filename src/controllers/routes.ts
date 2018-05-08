@@ -1,5 +1,5 @@
-import RuleController from './controllers/RuleController'
-import TestController from './controllers/TestController'
+import RuleController from './RuleController'
+import TestController from './TestController'
 
 class Routes {
   public mountRoutes (router:any): any {

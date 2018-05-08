@@ -19,7 +19,7 @@ class ConditionFactory {
             case ConditionOperator.SmallerOrEquals:
                 return (paramleft, paramRight) => (paramleft <= paramRight);
             default:
-                throw new Error('ConditionFactory.Mount: ConditionType - Not implemented');
+                throw new Error('ConditionFactory.Mount: ConditionOperator - Not implemented');
         }
     }
 }

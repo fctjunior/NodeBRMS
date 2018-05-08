@@ -1,9 +1,10 @@
+//eval is 2x heavier than the following logic
 class ComplexPropertyReader {
 
     public getValue(object:any, complexName:string) : any {
         if (complexName.indexOf('.') == -1)
             return object[complexName];
-        else {
+        else { 
             var splitResult = complexName.split('.');
 
             var currentObject = object;
@@ -30,7 +31,7 @@ class ComplexPropertyReader {
             for (let i = 0; i < splitResult.length; i++) {
 
                 if (currentObject[splitResult[i]] == null)
-                    throw new Error("ComplexPropertyReader.get: Property not found: " 
+                    throw new Error("ComplexPropertyReader.setValue: Property not found: " 
                                     + complexName + " - " + splitResult[i]);
 
                 if (i == splitResult.length -1) 
